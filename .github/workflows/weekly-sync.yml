@@ -1,0 +1,28 @@
+name: Weekly Sync with Upstream
+on:
+  schedule:
+    # Runs at 00:00 UTC every Saturday (cron syntax: '0 0 * * 6')
+    - cron: "0 0 * * 6"
+  workflow_dispatch: # Optional: Allows manual triggering
+
+jobs:
+  sync-upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout your fork
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Needed to fetch full Git history
+
+      - name: Add upstream repository
+        run: |
+          git remote add upstream https://github.com/ohmyzsh/ohmyzsh.git
+          git fetch upstream
+
+      - name: Merge upstream changes (fast-forward)
+        run: |
+          git checkout main  # or 'master' if your default branch is different
+          git merge upstream/main --ff-only
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required for pushing
