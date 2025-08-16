@@ -21,8 +21,8 @@ jobs:
 
       - name: Merge upstream changes (fast-forward)
         run: |
-          git checkout main  # or 'master' if your default branch is different
-          git merge upstream/main --ff-only
-          git push origin main
+          git checkout master
+          git merge upstream/master --ff-only
+          git push origin master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required for pushing
