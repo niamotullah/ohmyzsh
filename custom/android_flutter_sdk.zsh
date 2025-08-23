@@ -8,6 +8,7 @@
 # INFO: Android SDK environment variables
 
 export ANDROID_BASE_DIR="$HOME/Android"
+export ANDROID_SDK_HOME="$HOME/Android"
 
 set_android_sdk_env_var() {
   if [ -d "$ANDROID_SDK_HOME" ]; then
