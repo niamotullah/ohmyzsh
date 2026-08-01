@@ -1,8 +1,8 @@
 name: Weekly Sync with Upstream
 on:
   schedule:
-    # Runs at 00:00 UTC every Saturday (cron syntax: '0 0 * * 6')
-    - cron: "0 0 * * 6"
+    # Runs at 06:00 UTC every Friday
+    - cron: "0 6 * * 5"
   workflow_dispatch: # Optional: Allows manual triggering
 
 jobs:
@@ -12,17 +12,20 @@ jobs:
       - name: Checkout your fork
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Needed to fetch full Git history
+          fetch-depth: 0
 
       - name: Add upstream repository
         run: |
           git remote add upstream https://github.com/ohmyzsh/ohmyzsh.git
           git fetch upstream
 
-      - name: Merge upstream changes (fast-forward)
+      - name: Merge upstream changes
         run: |
-          git checkout master
-          git merge upstream/master --ff-only
-          git push origin master
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git checkout arch
+          git merge upstream/master --no-edit
+          git push origin arch
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Required for pushing
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
